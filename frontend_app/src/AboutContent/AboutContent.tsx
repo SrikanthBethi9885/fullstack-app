@@ -93,6 +93,7 @@ const AboutContent: React.FC = () => {
             .catch((error) => console.error('Error deleting customer:', error));
     };
 
+
     return (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
             {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
