@@ -7,7 +7,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "clean": "rimraf node_modules dist"
   },
   "dependencies": {
     "@mui/material": "^5.15.7",
@@ -17,9 +18,26 @@
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
+    "@testing-library/react": "^14.2.0",
+    "@types/jest": "^29.5.11",
     "@types/react": "^18.2.49",
-    "react-scripts": "^5.0.1"
+    "@types/react-dom": "^18.2.18",
+    "react-scripts": "^5.0.1",
+    "rimraf": "^5.0.5",
+    "web-vitals": "^3.5.2"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
