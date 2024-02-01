@@ -87,8 +87,10 @@ const AboutContent: React.FC = () => {
                 // Assuming the server returns a success message
                 console.log(response.data.message);
                 // Update the customers state to reflect the deletion
+
                 setCustomers(customers.filter((customer) => customer.Id !== Id));
-                setDeleteMessage(response.data.message)
+                setDeleteMessage(response.data.message);
+
             })
             .catch((error) => console.error('Error deleting customer:', error));
     };
@@ -96,9 +98,19 @@ const AboutContent: React.FC = () => {
 
     return (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
-            {deleteMessage && <div style={{ color: 'red' }}>{deleteMessage}</div>}
-            <h2>Customer List</h2>
+            {successMessage && <div style={{ color: 'green' }}>{successMessage}{successMessage && (setTimeout(() => setSuccessMessage(''), 5000) as any)}</div>}
+            {deleteMessage && (
+                <div style={{ color: 'red' }}>
+                    {deleteMessage}
+                    {deleteMessage && (setTimeout(() => setDeleteMessage(''), 5000) as any)}
+                </div>
+            )}
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}>
+
+                Customer List <div style={{ color: 'green', marginLeft: '5px' }}>{customers.length}</div>
+            </div>
+
             <table style={{ width: '50%', margin: '0 auto', border: '1px solid black', borderCollapse: 'collapse' }}>
                 <thead>
                     <tr>
@@ -139,7 +151,7 @@ const AboutContent: React.FC = () => {
                     <div>
                         <label>
                             Customer ID:
-                            <input type="number" name="Id" value={newCustomer.customerid} onChange={handleInputChange} />
+                            <input type="number" name="customerid" value={newCustomer.customerid} onChange={handleInputChange} />
                         </label>
                         <label>
                             Name:

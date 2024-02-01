@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run clean && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "clean": "rimraf node_modules dist"
@@ -18,10 +18,12 @@
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.1",
     "@testing-library/react": "^14.2.0",
     "@types/jest": "^29.5.11",
     "@types/react": "^18.2.49",
     "@types/react-dom": "^18.2.18",
+    "@types/testing-library__jest-dom": "^6.0.0",
     "react-scripts": "^5.0.1",
     "rimraf": "^5.0.5",
     "typescript": "^4.5.5",

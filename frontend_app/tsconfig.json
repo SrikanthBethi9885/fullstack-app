@@ -18,7 +18,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react",
+    "types": [
+      "react",
+      "node"
+    ] // Add "node" for Node.js environment
   },
   "include": [
     "src"

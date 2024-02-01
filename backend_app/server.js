@@ -66,6 +66,7 @@ app.delete('/api/deleteCustomer/:Id', async (req, res) => {
     // Delete the customer with the specified ID from the database
     await pool.execute('DELETE FROM customers WHERE Id = ?', [Id]);
     res.json({ message: 'Customer deleted successfully' });
+    await new Promise(resolve => setTimeout(resolve, 5000));
   } catch (error) {
     console.error('Error deleting customer:', error);
     res.status(500).send('Server Error');
