@@ -58,6 +58,30 @@ app.post('/api/addCustomer', async (req, res) => {
     }
 });
 
+// PUT method to update a customer
+app.put('/api/updateCustomer/:Id', async (req, res) => {
+  const Id = req.params.Id;
+  const { name, address, customerid } = req.body;
+
+  try {
+    // Check if the customer with the specified ID exists
+    const [existingRows] = await pool.execute('SELECT * FROM customers WHERE Id = ?', [Id]);
+
+    if (existingRows.length === 0) {
+      return res.status(404).send('Customer not found');
+    }
+
+    // Update the customer details
+    await pool.execute('UPDATE customers SET name = ?, address = ?, customerid = ? WHERE Id = ?', [name, address, customerid, Id]);
+
+    res.json({ message: 'Customer updated successfully' });
+  } catch (error) {
+    console.error('Error updating customer:', error);
+    res.status(500).send('Server Error');
+  }
+});
+
+
 // Add this route to handle customer deletion
 app.delete('/api/deleteCustomer/:Id', async (req, res) => {
   const Id = req.params.Id;
