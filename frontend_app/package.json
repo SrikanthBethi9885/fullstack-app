@@ -1,0 +1,25 @@
+{
+  "name": "your-project-name",
+  "version": "1.0.0",
+  "description": "Your project description",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "@mui/material": "^5.15.7",
+    "axios": "^1.6.7",
+    "react": "^18.2.0",
+    "react-router-dom": "^6.21.3",
+    "styled-components": "^6.1.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.49",
+    "react-scripts": "^5.0.1"
+  },
+  "author": "",
+  "license": "ISC"
+}

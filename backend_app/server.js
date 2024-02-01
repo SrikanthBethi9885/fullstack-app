@@ -21,7 +21,7 @@ app.get('/api/customers', async (req, res) => {
   try {
     const [rows] = await pool.execute('SELECT * FROM customers');
     res.json(rows);
-    console.log('Hello')
+    console.log('Hello Srikanth Bethi')
   } catch (error) {
     console.error('Error fetching customers:', error);
     res.status(500).send('Server Error');
