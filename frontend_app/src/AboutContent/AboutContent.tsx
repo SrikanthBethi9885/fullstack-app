@@ -5,8 +5,9 @@ interface Customer {
     Id: number;
     name: string;
     address: string;
-    customerid: number
+    customerid: number;
     // Add more fields as needed
+    isEditing?: boolean; // New field for tracking editing state
 }
 const itemsPerPage = 5; // Number of items per page
 
@@ -22,7 +23,8 @@ const AboutContent: React.FC = () => {
     const [showAddForm, setShowAddForm] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [deleteMessage, setDeleteMessage] = useState('')
+    const [deleteMessage, setDeleteMessage] = useState('');
+    const [editing, setEditing] = useState(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -34,8 +36,18 @@ const AboutContent: React.FC = () => {
     };
     const handleShowForm = () => {
         setShowAddForm(true);
+        setEditing(true);
     };
-
+    const handleCancel = () => {
+        setShowAddForm(false);
+        setEditing(false);
+        setNewCustomer({
+            Id: 0,
+            name: '',
+            address: '',
+            customerid: 0,
+        });
+    };
 
 
     const handleAddCustomer = () => {
@@ -95,6 +107,47 @@ const AboutContent: React.FC = () => {
             .catch((error) => console.error('Error deleting customer:', error));
     };
 
+    const handleEditCustomer = (customer: Customer) => {
+        setCustomers((prevCustomers) =>
+            prevCustomers.map((c) =>
+                c.Id === customer.Id ? { ...c, isEditing: !c.isEditing } : { ...c, isEditing: false }
+            )
+        );
+        setNewCustomer({ ...customer, isEditing: true });
+        setEditing(true);
+    };
+
+    const handleUpdateCustomer = (customer: Customer) => {
+        if (!newCustomer.name || !newCustomer.address) {
+            setErrorMessage('Name and Address are required.');
+            return;
+        } else {
+            setErrorMessage('');
+        }
+
+        axios
+            .put(`http://localhost:5000/api/updateCustomer/${newCustomer.Id}`, newCustomer)
+            .then((response) => {
+                console.log(response.data.message);
+                setSuccessMessage(response.data.message);
+                setCustomers((prevCustomers) =>
+                    prevCustomers.map((c) =>
+                        c.Id === customer.Id ? { ...c, isEditing: false } : c
+                    )
+                );
+                setNewCustomer({
+                    Id: 0,
+                    name: '',
+                    address: '',
+                    customerid: 0,
+                });
+                setShowAddForm(false);
+            })
+            .catch((error) => console.error('Error updating customer:', error));
+    };
+
+
+
 
     return (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -110,6 +163,53 @@ const AboutContent: React.FC = () => {
 
                 Customer List <div style={{ color: 'green', marginLeft: '5px' }}>{customers.length}</div>
             </div>
+            {/* Add customer form */}
+            <div style={{ marginBottom: '10px' }}>
+                <button onClick={handleShowForm}>Add Customer</button>
+                {errorMessage && (
+                    <div style={{ color: 'red' }}>
+                        {errorMessage}
+                        {errorMessage && (setTimeout(() => setErrorMessage(''), 5000) as any)}
+                    </div>
+                )}
+                {showAddForm && (
+                    <div>
+
+                        <label>
+                            Customer ID:
+                            <input
+                                type="number"
+                                name="customerid"
+                                //value={newCustomer.customerid}
+                                onChange={handleInputChange}
+                            />
+                        </label>
+                        <label>
+                            Name:
+                            <input
+                                type="text"
+                                name="name"
+                                //value={newCustomer.name}
+                                onChange={handleInputChange}
+                            />
+                        </label>
+                        <label>
+                            Address:
+                            <input
+                                type="text"
+                                name="address"
+                                //value={newCustomer.address}
+                                onChange={handleInputChange}
+                            />
+                        </label>
+                        <button onClick={handleAddCustomer}>Submit</button>
+                        {editing && <button onClick={handleCancel}>Cancel</button>}
+                    </div>
+                )}
+
+
+
+            </div>
 
             <table style={{ width: '50%', margin: '0 auto', border: '1px solid black', borderCollapse: 'collapse' }}>
                 <thead>
@@ -122,19 +222,64 @@ const AboutContent: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentItems.map((customer) => (
+                    {/* {currentItems.map((customer) => (
                         <tr key={customer.Id}>
                             <td style={{ padding: '10px', border: '1px solid black' }}>{customer.Id}</td>
                             <td style={{ padding: '10px', border: '1px solid black' }}>{customer.customerid}</td>
                             <td style={{ padding: '10px', border: '1px solid black' }}>{customer.name}</td>
                             <td style={{ padding: '10px', border: '1px solid black' }}>{customer.address}</td>
                             <td style={{ padding: '10px', border: '1px solid black' }}><button onClick={() => handleDeleteCustomer(customer.Id)}>Delete</button></td>
+                            <td style={{ padding: '10px', border: '1px solid black' }}>
+                                <button onClick={() => handleEditCustomer(customer)}>Edit</button>
+                            </td>
+                        </tr>
+                    ))} */}
+                    {currentItems.map((customer) => (
+                        <tr key={customer.Id}>
+                            <td style={{ padding: '10px', border: '1px solid black' }}>{customer.Id}</td>
+                            <td style={{ padding: '10px', border: '1px solid black' }}>{customer.customerid}</td>
+                            <td style={{ padding: '10px', border: '1px solid black' }}>
+                                {customer.isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={newCustomer.name}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    customer.name
+                                )}
+                            </td>
+                            <td style={{ padding: '10px', border: '1px solid black' }}>
+                                {customer.isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="address"
+                                        value={newCustomer.address}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    customer.address
+                                )}
+                            </td>
+                            <td style={{ padding: '10px', border: '1px solid black' }}>
+                                <button onClick={() => handleDeleteCustomer(customer.Id)}>Delete</button>
+                                {customer.isEditing ? (
+                                    <>
+                                        <button onClick={() => handleUpdateCustomer(customer)}>Update</button>
+                                        <button onClick={() => handleEditCustomer(customer)}>Cancel</button>
+                                    </>
+                                ) : (
+                                    <button onClick={() => handleEditCustomer(customer)}>Edit</button>
+                                )}
+                            </td>
+
                         </tr>
                     ))}
                 </tbody>
             </table>
             {/* Pagination */}
-            <div style={{ marginTop: '20px' }}>
+            {/* <div style={{ marginTop: '20px' }}>
                 <ul style={{ listStyleType: 'none', padding: '0', display: 'flex', justifyContent: 'center' }}>
                     {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
                         <li key={page} style={{ margin: '0 5px' }}>
@@ -142,30 +287,24 @@ const AboutContent: React.FC = () => {
                         </li>
                     ))}
                 </ul>
+            </div> */}
+            <div style={{ marginTop: '20px' }}>
+                <ul style={{ listStyleType: 'none', padding: '0', display: 'flex', justifyContent: 'center' }}>
+                    <li style={{ margin: '0 5px' }}>
+                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                            {"< Previous"}
+                        </button>
+                    </li>
+                    <li style={{ margin: '0 5px' }}>
+                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                            {"Next >"}
+                        </button>
+                    </li>
+                </ul>
             </div>
-            {/* Add customer form */}
-            <div style={{ marginBottom: '10px' }}>
-                <button onClick={handleShowForm}>Add Customer</button>
-                {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-                {showAddForm && (
-                    <div>
-                        <label>
-                            Customer ID:
-                            <input type="number" name="customerid" value={newCustomer.customerid} onChange={handleInputChange} />
-                        </label>
-                        <label>
-                            Name:
-                            <input type="text" name="name" value={newCustomer.name} onChange={handleInputChange} />
-                        </label>
-                        <label>
-                            Address:
-                            <input type="text" name="address" value={newCustomer.address} onChange={handleInputChange} />
-                        </label>
-                        <button onClick={handleAddCustomer}>Submit</button>
-                    </div>
-                )}
 
-            </div>
+
+
         </div>
     );
 };
