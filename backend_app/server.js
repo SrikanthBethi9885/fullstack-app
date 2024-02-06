@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const express = require('express');
 const mysql = require('mysql2/promise');
 require('dotenv').config();
@@ -8,6 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 const port = 5000;
+
 
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -96,6 +98,50 @@ app.delete('/api/deleteCustomer/:Id', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+// Handle signup POST request
+app.post('/api/signup', async (req, res) => {
+  const { email, username, password } = req.body;
+
+  try {
+    // Hash the password before storing it in the database
+    //const hashedPassword = await bcrypt.hash(password, 10); // Adjust the salt rounds as needed
+
+    const [result] = await pool.execute('INSERT INTO users (email, username, password) VALUES (?, ?, ?)', [email, username, password]);
+    console.log('User signed up successfully:', result);
+    res.status(200).send('User signed up successfully');
+  } catch (error) {
+    console.error('Error executing MySQL query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Login endpoint
+app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    // Check if the user exists in the database
+    const [userRows] = await pool.execute('SELECT * FROM users WHERE username = ?', [username]);
+    if (userRows.length === 0) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+    const user = userRows[0];
+    // Compare the provided password with the stored hashed password
+    //const passwordMatch = await bcrypt.compare(password, user.password);
+    if (user.password === password) {
+      res.status(200).json({ message: 'Login successful' });
+    } else {
+      res.status(401).json({ message: 'Invalid username or password' });
+    }
+    console.log('User Rows:', userRows);
+    console.log('Provided Password:', password);
+    //console.log('Password Match:', passwordMatch);
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
