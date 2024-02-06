@@ -25,7 +25,8 @@ const AboutContent: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [deleteMessage, setDeleteMessage] = useState('');
     const [editing, setEditing] = useState(false);
-
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [originalCustomers, setOriginalCustomers] = useState<Customer[]>([]);
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
 
@@ -89,7 +90,10 @@ const AboutContent: React.FC = () => {
     useEffect(() => {
         axios
             .get<Customer[]>('http://localhost:5000/api/customers')
-            .then((response) => setCustomers(response.data))
+            .then((response) => {
+                setCustomers(response.data);
+                setOriginalCustomers(response.data);
+            })
             .catch((error) => console.error('Error fetching customers:', error));
     }, []);
     const handleDeleteCustomer = (Id: number) => {
@@ -146,9 +150,19 @@ const AboutContent: React.FC = () => {
             .catch((error) => console.error('Error updating customer:', error));
     };
 
+    const handleSearch = () => {
+        // Perform search logic based on the searchTerm
+        let filteredCustomers = originalCustomers.filter((customer) =>
+            customer.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setCustomers(filteredCustomers);
+    };
 
-
-
+    const handleCancelSearch = () => {
+        // Reset search term and restore original list of customers
+        setSearchTerm('');
+        setCustomers(originalCustomers);
+    };
     return (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
             {successMessage && <div style={{ color: 'green' }}>{successMessage}{successMessage && (setTimeout(() => setSuccessMessage(''), 5000) as any)}</div>}
@@ -210,6 +224,12 @@ const AboutContent: React.FC = () => {
 
 
             </div>
+            <div>
+                <input type='text' placeholder='Search' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                <button onClick={handleSearch}>Search</button>
+                <button onClick={handleCancelSearch}>Cancel</button>
+            </div>
+
 
             <table style={{ width: '50%', margin: '0 auto', border: '1px solid black', borderCollapse: 'collapse' }}>
                 <thead>
