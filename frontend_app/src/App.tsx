@@ -6,6 +6,8 @@ import LoginContent from './LoginContent/LoginContent';
 import SignupContent from './LoginContent/SignupContent';
 import Footer from './Footer/Footer';
 import AboutContent from './AboutContent/AboutContent';
+import ServiceContent from './ServiceContent/ServiceContent';
+import ContactContent from './ContactContent/ContactContent';
 
 const Container = styled.div`
   display: flex;
@@ -53,8 +55,8 @@ const Main = styled.main`
   padding: 20px 0;
 `;
 //const AboutContent = () => <p>This is the About page content.</p>;
-const ServicesContent = () => <p>This is the Services page content.</p>;
-const ContactContent = () => <p>This is the Contact page content.</p>;
+//const ServicesContent = () => <p>This is the Services page content.</p>;
+//const ContactContent = () => <p>This is the Contact page content.</p>;
 const App = () => {
   return (
     <Container>
@@ -74,7 +76,7 @@ const App = () => {
             <Main>
               <Routes>
                 <Route path="/about" element={<AboutContent />} />
-                <Route path="/services" element={<ServicesContent />} />
+                <Route path="/services" element={<ServiceContent />} />
                 <Route path="/contact" element={<ContactContent />} />
                 <Route path="/" element={<HomeContent />} />
                 <Route path="/login" element={<LoginContent />} />

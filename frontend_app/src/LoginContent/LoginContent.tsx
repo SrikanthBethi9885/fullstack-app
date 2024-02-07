@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
 
 const FormContainer = styled.div`
   width: 300px;
@@ -54,6 +56,7 @@ const LoginContent = () => {
     password: '',
   });
   const [loginMessage, setLoginMessage] = useState('');
+  const navigate = useNavigate()
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -83,6 +86,7 @@ const LoginContent = () => {
           username: '',
           password: ''
         })
+        navigate('/');
         // Add redirection logic or other actions on successful login
       } else {
         console.error('Error logging in:', response.statusText);
