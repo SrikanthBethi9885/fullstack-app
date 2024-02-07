@@ -40,7 +40,7 @@ const ContactContent = () => {
     };
 
     const getGpt3Response = async (userMessage: string): Promise<string> => {
-        const apiKey = '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';
+        const apiKey = 'apikey';
         const apiUrl = 'https://api.openai.com/v1/chat/completions ';
 
         try {
