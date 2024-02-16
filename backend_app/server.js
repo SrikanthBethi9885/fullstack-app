@@ -3,6 +3,7 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 const cors = require('cors');
+const axios = require('axios');
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,27 @@ const pool = mysql.createPool({
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
+});
+
+const NEWS_API_KEY = process.env.NEWS_API_KEY;
+const NEWS_API_URL = `https://newsapi.org/v2/everything?q=tesla&from=2024-01-16&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
+
+//const NEWS_API_URL = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${NEWS_API_KEY}`
+
+app.get('/news', async (req, res) => {
+  try {
+    // Make a request to the News API
+    const response = await axios.get(NEWS_API_URL);
+
+    // Handle the API response and extract relevant data
+    const articles = response.data.articles;
+
+    // Send the articles as a JSON response
+    res.json({ articles });
+  } catch (error) {
+    console.error('Error fetching news from News API:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 // GET method to fetch customers
