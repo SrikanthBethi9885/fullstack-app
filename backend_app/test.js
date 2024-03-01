@@ -4,7 +4,7 @@ const axios = require('axios');
 
 async function logRequest(destination) {
     try {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts/2');
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts/3');
         const processedRequest = {
             id: response.data.id,
             title: response.data.title,

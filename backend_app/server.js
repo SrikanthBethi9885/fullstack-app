@@ -81,6 +81,32 @@ app.post('/api/addCustomer', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+// POST method to add multiple customers
+app.post('/api/addCustomers', async (req, res) => {
+  const customers = req.body;
+
+  try {
+    console.log('Received Request Body:', customers);
+
+    if (!Array.isArray(customers)) {
+      throw new Error('Invalid request body. Expected an array.');
+    }
+
+    for (const customer of customers) {
+      const { name, address, customerid } = customer;
+      await pool.execute('INSERT INTO customers (name, address, customerid) VALUES (?, ?, ?)', [name, address, customerid]);
+    }
+
+    res.json({ message: 'Customers added successfully to local db' });
+  } catch (error) {
+    console.error('Error adding customers:', error);
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
+});
+
+
+
+
 
 // PUT method to update a customer
 app.put('/api/updateCustomer/:Id', async (req, res) => {
