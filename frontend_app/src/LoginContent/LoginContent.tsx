@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
+interface LoginContentProps {
+  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 
 const FormContainer = styled.div`
   width: 300px;
@@ -50,7 +54,7 @@ const MessageContainer = styled.div<any>`
   color: ${(props) => (props.success ? 'green' : 'red')};
 `;
 
-const LoginContent = () => {
+const LoginContent: React.FC<LoginContentProps> = ({ setAuthenticated }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -86,6 +90,7 @@ const LoginContent = () => {
           username: '',
           password: ''
         })
+        setAuthenticated(true);
         navigate('/');
         // Add redirection logic or other actions on successful login
       } else {
@@ -97,6 +102,7 @@ const LoginContent = () => {
       setLoginMessage('Internal Server Error');
     }
   };
+
 
     return (
         <div>

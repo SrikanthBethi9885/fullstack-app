@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Link, Routes, Navigate, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import HomeContent from './HomeContent/HomeContent';
 import LoginContent from './LoginContent/LoginContent';
@@ -8,6 +8,7 @@ import Footer from './Footer/Footer';
 import AboutContent from './AboutContent/AboutContent';
 import ServiceContent from './ServiceContent/ServiceContent';
 import ContactContent from './ContactContent/ContactContent';
+import LogoutContent from './LogoutContent/LogoutContent';
 
 const Container = styled.div`
   display: flex;
@@ -58,29 +59,43 @@ const Main = styled.main`
 //const ServicesContent = () => <p>This is the Services page content.</p>;
 //const ContactContent = () => <p>This is the Contact page content.</p>;
 const App = () => {
+  const [authenticated, setAuthenticated] = useState(false);
+
   return (
     <Container>
       <Router>
         <FormContainer>
           <Header>
-            <NavLink to="/"><Logo src={'./MissionG3_logo.jpg'} alt="Logo" /></NavLink>
+            <NavLink to="/">
+              <Logo src={'./MissionG3_logo.jpg'} alt="Logo" />
+            </NavLink>
             <div>
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/about">About</NavLink>
-              <NavLink to="/services">Services</NavLink>
-              <NavLink to="/contact">Contact</NavLink>
-              <NavLink to="/login">Login</NavLink>
+              {authenticated ? (
+                <>
+                  <NavLink to="/">Home</NavLink>
+                  <NavLink to="/about">About</NavLink>
+                  <NavLink to="/services">Services</NavLink>
+                  <NavLink to="/contact">Contact</NavLink>
+                  <NavLink to="/logout">Logout</NavLink>
+                </>
+              ) : (
+                  <NavLink to="/login">Login</NavLink>
+              )}
             </div>
           </Header>
           <Wrapper>
             <Main>
               <Routes>
-                <Route path="/about" element={<AboutContent />} />
-                <Route path="/services" element={<ServiceContent />} />
-                <Route path="/contact" element={<ContactContent />} />
-                <Route path="/" element={<HomeContent />} />
-                <Route path="/login" element={<LoginContent />} />
+                {authenticated ? <Route path="/about" element={<AboutContent />} /> : <Route path="/login" element={<LoginContent setAuthenticated={setAuthenticated} />} />}
+                {authenticated ? <Route path="/services" element={<ServiceContent />} /> : <Route path="/login" element={<LoginContent setAuthenticated={setAuthenticated} />} />}
+                {authenticated ? <Route path="/contact" element={<ContactContent />} /> : <Route path="/login" element={<LoginContent setAuthenticated={setAuthenticated} />} />}
+                <Route path="/login" element={<LoginContent setAuthenticated={setAuthenticated} />} />
                 <Route path="/signup" element={<SignupContent />} />
+                <Route path="/logout" element={<LogoutContent setAuthenticated={setAuthenticated} />} />
+                {/* Only render HomeContent if authenticated */}
+                {authenticated ? <Route path="/" element={<HomeContent />} /> : null}
+                {/* Redirect to login if not authenticated */}
+                {!authenticated ? <Route path="/login" element={<LoginContent setAuthenticated={setAuthenticated} />} /> : null}
               </Routes>
             </Main>
           </Wrapper>
