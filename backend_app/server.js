@@ -40,6 +40,74 @@ app.get('/news', async (req, res) => {
   }
 });
 
+app.get('/api/json/:postId?', async (req, res) => {
+  const postId = req.params.postId;
+
+  try {
+    let posts;
+
+    if (postId) {
+      // Fetch a single post if postId is provided
+      const result = await axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}`);
+      posts = [result.data]; // Convert the single post into an array
+    } else {
+      // Fetch all posts if postId is not provided
+      const result = await axios.get('https://jsonplaceholder.typicode.com/posts');
+      posts = result.data;
+    }
+
+    // Display posts in a table
+    const html = `
+      <html>
+        <head>
+          <style>
+            table {
+              border-collapse: collapse;
+              width: 100%;
+            }
+            th, td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: left;
+            }
+            th {
+              background-color: #f2f2f2;
+            }
+          </style>
+        </head>
+        <body>
+          <h2>${postId ? 'Post Details' : 'All Posts'}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Body</th>
+                <th>User ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${posts.map(post => `
+                <tr>
+                  <td>${post.id}</td>
+                  <td>${post.title}</td>
+                  <td>${post.body}</td>
+                  <td>${post.userId}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+
+    res.send(html);
+  } catch (error) {
+    // Handle errors if any
+    console.error('Error fetching data:', error.message);
+    res.status(500).send('Internal Server Error');
+  }
+});
 // GET method to fetch customers
 app.get('/api/customers', async (req, res) => {
   try {

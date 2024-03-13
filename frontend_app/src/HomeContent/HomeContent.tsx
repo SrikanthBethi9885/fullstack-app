@@ -53,18 +53,19 @@ const HomeContent = () => {
                 Instructional messages, sometimes referred to as prompting messages, are messages that tell the user how to work with, or complete, the screen displayed.</p>
 
             {/* Display news data */}
-            <Grid container spacing={2}>
-                {newsData.map((article, index) => (
-                    <Grid item xs={4} key={index}>
-                        <img src={article.urlToImage} alt={`Article ${index + 1}`} style={{ height: '400px', width: '400px' }} />
-
-                        <Typography>{article.author}</Typography>
-                        <Typography>{article.title}</Typography>
-                        <Link href={article.url} target="_blank" rel="noopener noreferrer">
-                            Read more
-                        </Link>
-                    </Grid>
-                ))}
+            <Grid container spacing={0} >
+                <Grid item xs={8} style={{
+                    backgroundColor: '#68EF9F', height: '250px', width: '200px', alignItems: 'center',
+                    justifyContent: 'center', display: 'flex'
+                }}>
+                    <Typography>Hello</Typography>
+                </Grid>
+                <Grid item xs={4} style={{
+                    backgroundColor: '#EFE168', height: '250px', width: '200px', alignItems: 'center',
+                    justifyContent: 'center', display: 'flex', paddingLeft: '10px'
+                }}>
+                    <Typography>Hello</Typography>
+                </Grid>
             </Grid>
         </div>
     );
