@@ -1,0 +1,188 @@
+{
+    "elements": [
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "myInput",
+                "text": "Name:"
+            }
+        },
+        {
+            "type": "input",
+            "attributes": {
+                "id": "myInput",
+                "type": "text",
+                "placeholder": "Enter your name"
+            }
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "myTextarea",
+                "text": "Description:"
+            }
+        },
+        {
+            "type": "textarea",
+            "attributes": {
+                "id": "myTextarea",
+                "placeholder": "Enter your text here",
+                "rows": 4,
+                "cols": 50
+            }
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "myCheckbox",
+                "text": "Accept Terms:"
+            }
+        },
+        {
+            "type": "input",
+            "attributes": {
+                "id": "myCheckbox",
+                "type": "checkbox"
+            }
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "text": "Gender:"
+            }
+        },
+        {
+            "type": "input",
+            "attributes": {
+                "id": "male",
+                "name": "gender",
+                "type": "radio",
+                "value": "male"
+            }
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "male",
+                "text": "Male"
+            }
+        },
+        {
+            "type": "input",
+            "attributes": {
+                "id": "female",
+                "name": "gender",
+                "type": "radio",
+                "value": "female"
+            }
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "female",
+                "text": "Female"
+            }
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "mySelect",
+                "text": "Options:"
+            }
+        },
+        {
+            "type": "select",
+            "attributes": {
+                "id": "mySelect"
+            },
+            "options": [
+                {
+                    "value": "option1",
+                    "text": "Option 1"
+                },
+                {
+                    "value": "option2",
+                    "text": "Option 2"
+                },
+                {
+                    "value": "option3",
+                    "text": "Option 3"
+                }
+            ]
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "myDate",
+                "text": "Select Date:"
+            }
+        },
+        {
+            "type": "input",
+            "attributes": {
+                "id": "myDate",
+                "type": "date"
+            }
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "myColor",
+                "text": "Pick a Color:"
+            }
+        },
+        {
+            "type": "input",
+            "attributes": {
+                "id": "myColor",
+                "type": "color"
+            }
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "myFile",
+                "text": "Upload File:"
+            }
+        },
+        {
+            "type": "input",
+            "attributes": {
+                "id": "myFile",
+                "type": "file"
+            }
+        },
+        {
+            "type": "label",
+            "attributes": {
+                "htmlFor": "myRange",
+                "text": "Select Range:"
+            }
+        },
+        {
+            "type": "input",
+            "attributes": {
+                "id": "myRange",
+                "type": "range",
+                "min": 0,
+                "max": 100,
+                "step": 25
+            }
+        },
+        {
+            "type": "progress",
+            "attributes": {
+                "id": "myProgress",
+                "value": 20,
+                "max": 100
+            }
+        },
+        {
+            "type": "button",
+            "attributes": {
+                "id": "myButton",
+                "text": "Submit"
+            }
+        }
+    ]
+}

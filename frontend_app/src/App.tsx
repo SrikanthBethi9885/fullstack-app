@@ -9,6 +9,7 @@ import AboutContent from './AboutContent/AboutContent';
 import ServiceContent from './ServiceContent/ServiceContent';
 import ContactContent from './ContactContent/ContactContent';
 import LogoutContent from './LogoutContent/LogoutContent';
+import JsonToUI from './JSONtoUI/JsonToUI';
 
 const Container = styled.div`
   display: flex;
@@ -63,7 +64,7 @@ const App = () => {
 
   return (
     <Container>
-      <Router>
+      {/* <Router>
         <FormContainer>
           <Header>
             <NavLink to="/">
@@ -92,16 +93,15 @@ const App = () => {
                 <Route path="/login" element={<LoginContent setAuthenticated={setAuthenticated} />} />
                 <Route path="/signup" element={<SignupContent />} />
                 <Route path="/logout" element={<LogoutContent setAuthenticated={setAuthenticated} />} />
-                {/* Only render HomeContent if authenticated */}
                 {authenticated ? <Route path="/" element={<HomeContent />} /> : null}
-                {/* Redirect to login if not authenticated */}
                 {!authenticated ? <Route path="/login" element={<LoginContent setAuthenticated={setAuthenticated} />} /> : null}
               </Routes>
             </Main>
           </Wrapper>
           <Footer />
         </FormContainer>
-      </Router>
+      </Router> */}
+      <JsonToUI />
     </Container>
   );
 };

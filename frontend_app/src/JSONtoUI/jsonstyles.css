@@ -1,0 +1,59 @@
+/* JsonToUI.css */
+.json-to-ui {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.json-to-ui textarea,
+.json-to-ui input,
+.json-to-ui select,
+.json-to-ui progress {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.json-to-ui label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.json-to-ui input[type="checkbox"],
+.json-to-ui input[type="radio"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.json-to-ui button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.json-to-ui button:hover {
+    background-color: #0056b3;
+}
+
+.json-to-ui input[type="range"] {
+    width: 100%;
+}
+
+.json-to-ui input[type="color"] {
+    padding: 0;
+    height: 35px;
+}
+
+.json-to-ui input[type="file"] {
+    padding: 0;
+}
